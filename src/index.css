@@ -1,0 +1,121 @@
+:root {
+  --purple-primary: #8B5CF6;
+  --purple-secondary: #A78BFA;
+  --purple-dark: #6D28D9;
+  --purple-light: #C4B5FD;
+  --background-dark: #0a0a0f;
+  --background-secondary: #1a1a2e;
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+  --accent-neon: #00ffff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--background-dark);
+  color: var(--text-primary);
+  overflow: hidden;
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+.glow {
+  filter: drop-shadow(0 0 10px var(--purple-primary));
+}
+
+.neon-glow {
+  text-shadow: 0 0 10px var(--accent-neon);
+}
+
+.purple-gradient {
+  background: linear-gradient(135deg, var(--purple-primary), var(--purple-secondary));
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.floating {
+  animation: float 3s ease-in-out infinite;
+}
+
+.pulsing {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+  }
+  
+  /* Optimize animations for mobile performance */
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) translateZ(0); }
+    50% { transform: translateY(-8px) translateZ(0); }
+  }
+  
+  .floating {
+    animation: float 4s ease-in-out infinite;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 13px;
+  }
+  
+  /* Reduce animation complexity on small screens */
+  .floating {
+    animation: none;
+  }
+  
+  .pulsing {
+    animation: pulse 3s ease-in-out infinite;
+  }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Landscape mobile orientation */
+@media (max-height: 500px) and (orientation: landscape) {
+  #root {
+    height: 100vh;
+    width: 100vw;
+  }
+}
+
+/* Prevent text selection on mobile */
+@media (hover: none) and (pointer: coarse) {
+  * {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+} 

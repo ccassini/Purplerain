@@ -1,0 +1,98 @@
+.app {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(ellipse at center, #1a0b2e 0%, #0a0a0f 100%);
+}
+
+.loading-screen {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--background-dark);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+}
+
+.loading-content {
+  text-align: center;
+  padding: 2rem;
+}
+
+.purple-rain-logo {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  display: inline-block;
+}
+
+.loading-logo-image {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.8));
+}
+
+.loading-content h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(45deg, var(--purple-primary), var(--purple-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.loading-content p {
+  color: var(--text-secondary);
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.loading-bar {
+  height: 4px;
+  background: linear-gradient(90deg, var(--purple-primary), var(--purple-secondary));
+  border-radius: 2px;
+  box-shadow: 0 0 20px var(--purple-primary);
+}
+
+.main-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .loading-content h1 {
+    font-size: 2rem;
+  }
+  
+  .loading-content p {
+    font-size: 1rem;
+  }
+  
+  .purple-rain-logo {
+    font-size: 3rem;
+  }
+  
+  .loading-logo-image {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+/* Performance optimizations */
+.app * {
+  will-change: transform;
+}
+
+/* Smooth scrolling and hardware acceleration */
+.app {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+} 
