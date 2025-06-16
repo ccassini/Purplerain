@@ -34,6 +34,4 @@ Found a bug? Have an idea?
 - Twitter: [@Cassini0x](https://x.com/Cassini0x)
 - Issues: [GitHub Issues](https://github.com/ccassini/Purplerain/issues)
 
----
 
-**Built with 💜 by [Cassini](https://x.com/Cassini0x) for the Monad community** 
