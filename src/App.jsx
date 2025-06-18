@@ -4,6 +4,7 @@ import PurpleRainCanvas from './components/PurpleRainCanvas'
 import Header from './components/Header'
 import Stats from './components/Stats'
 import Footer from './components/Footer'
+import SimpleMusic from './components/SimpleMusic'
 import { MonadProvider } from './contexts/MonadContext'
 import './App.css'
 
@@ -55,6 +56,7 @@ function App() {
   return (
     <MonadProvider>
       <div className="app">
+        <SimpleMusic />
         <Header />
         <main className="main-content">
           <PurpleRainCanvas />

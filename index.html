@@ -5,9 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Purple Rain - Monad Blockchain Visualization</title>
     <meta name="description" content="Real-time visualization of Monad blockchain transactions as purple rain">
+    
+    <!-- Preconnect to external resources -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Preload critical images for immediate caching -->
+    <link rel="preload" href="/drops/defi.png" as="image" type="image/png">
+    <link rel="preload" href="/drops/nft.png" as="image" type="image/png">
+    <link rel="preload" href="/drops/transfer.png" as="image" type="image/png">
+    <link rel="preload" href="/drops/contract-call.png" as="image" type="image/png">
+    <link rel="preload" href="/drops/contract-deploy.png" as="image" type="image/png">
+    <link rel="preload" href="/drops/other.png" as="image" type="image/png">
+    <link rel="preload" href="/backgroud.png" as="image" type="image/png">
+    <link rel="preload" href="/monad_logo.png" as="image" type="image/png">
+    
+    <!-- DNS prefetch for potential external resources -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    
+    <!-- Font with display=swap for better performance -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
         * {
             margin: 0;
@@ -38,6 +57,12 @@
         /* Prevent zoom on double tap for iOS */
         * {
             touch-action: manipulation;
+        }
+        
+        /* Optimize image loading */
+        img {
+            content-visibility: auto;
+            contain: layout style paint;
         }
     </style>
 </head>

@@ -163,7 +163,7 @@ class MonadWebSocketManager {
   }
 
   async fetchBlockData(blockIdentifier) {
-    // Rate limiting için delay
+            // Delay for rate limiting
     if (this.blockRateLimitDelay) {
       await new Promise(resolve => setTimeout(resolve, this.blockRateLimitDelay))
     }
@@ -180,7 +180,7 @@ class MonadWebSocketManager {
         body: JSON.stringify({
           jsonrpc: '2.0',
           method: 'eth_getBlockByHash',
-          params: [blockIdentifier, true], // true - full transaction data al
+          params: [blockIdentifier, true], // true - get full transaction data
           id: Math.floor(Math.random() * 10000)
         }),
         signal: controller.signal
@@ -288,7 +288,7 @@ class MonadWebSocketManager {
     const now = Date.now()
     this.updateTpsCalculation(now)
 
-    // Sadece gerçek blockchain verilerini çek
+            // Only fetch real blockchain data
     this.fetchTransactionData(txHash)
       .then(transaction => {
         if (transaction) {
@@ -304,7 +304,7 @@ class MonadWebSocketManager {
   }
 
   async fetchTransactionData(txHash) {
-    // Rate limiting için cache ve delay ekle
+            // Add cache and delay for rate limiting
     if (this.rateLimitDelay) {
       await new Promise(resolve => setTimeout(resolve, this.rateLimitDelay))
     }

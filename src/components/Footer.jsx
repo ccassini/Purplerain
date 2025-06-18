@@ -8,6 +8,15 @@ const Footer = () => {
     window.open('https://x.com/Cassini0x', '_blank', 'noopener,noreferrer')
   }
 
+  const transactionTypes = [
+    { name: 'Transfer', icon: '/drops/transfer.png', color: '#4ECDC4' },
+    { name: 'DeFi', icon: '/drops/defi.png', color: '#00D4AA' },
+    { name: 'Contract Call', icon: '/drops/contract-call.png', color: '#45B7D1' },
+    { name: 'NFT', icon: '/drops/nft.png', color: '#FF6B6B' },
+    { name: 'Other', icon: '/drops/other.png', color: '#FECA57' },
+    { name: 'Contract Deploy', icon: '/drops/contract-deploy.png', color: '#96CEB4' }
+  ]
+
   return (
     <motion.footer 
       className="app-footer"
@@ -18,8 +27,34 @@ const Footer = () => {
       <div className="footer-content">
         <div className="footer-left">
           <p className="footer-text">
-            Built with <img src="/raindrop.png" alt="💜" className="footer-icon" /> for Monad Community
+            Built with <img src="/monad_logo.png" alt=" 💜 " className="footer-icon" /> for Monad Community
           </p>
+        </div>
+        
+        {/* Transaction Types Legend */}
+        <div className="transaction-legend">
+          <span className="legend-title">Transaction Types:</span>
+          <div className="legend-items">
+            {transactionTypes.map((type, index) => (
+              <motion.div
+                key={type.name}
+                className="legend-item"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <img 
+                  src={type.icon} 
+                  alt={type.name}
+                  className="legend-icon"
+                  style={{ filter: `drop-shadow(0 0 2px ${type.color}66)` }}
+                />
+                <span className="legend-text" style={{ color: type.color }}>
+                  {type.name}
+                </span>
+              </motion.div>
+            ))}
+          </div>
         </div>
         
         <div className="footer-right">

@@ -4,7 +4,7 @@
   right: 20px;
   width: 320px;
   background: rgba(10, 10, 15, 0.85);
-  backdrop-filter: blur(15px);
+  /* Backdrop blur removed for pure performance */
   border: 1px solid rgba(139, 92, 246, 0.3);
   border-radius: 15px;
   padding: 20px;
@@ -62,7 +62,7 @@
 .stat-card:hover {
   background: rgba(139, 92, 246, 0.1);
   border-color: var(--purple-primary);
-  box-shadow: 0 5px 20px rgba(139, 92, 246, 0.2);
+  /* Box shadow removed for pure performance */
 }
 
 .stat-icon-wrapper {
@@ -114,7 +114,7 @@
   height: 6px;
   border-radius: 50%;
   background: var(--accent-neon);
-  box-shadow: 0 0 10px var(--accent-neon);
+  /* Box shadow removed for pure performance */
 }
 
 .hash-display {

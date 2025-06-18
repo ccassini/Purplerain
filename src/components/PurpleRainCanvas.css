@@ -1,12 +1,16 @@
 .purple-rain-canvas {
   position: relative;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   overflow: hidden;
-  background: radial-gradient(ellipse at center, #1a0b2e 0%, #0a0a0f 100%);
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a0933 50%, #0a0a0a 100%);
+  background-image: url('/backgroud.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
-/* CSS Background */
 .css-background {
   position: absolute;
   top: 0;
@@ -14,6 +18,7 @@
   width: 100%;
   height: 100%;
   z-index: 1;
+  pointer-events: none;
 }
 
 .gradient-bg {
@@ -22,7 +27,10 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #1a0b2e 0%, #16213e 50%, #0a0a0f 100%);
+  background: radial-gradient(ellipse at center, 
+    rgba(139, 92, 246, 0.02) 0%, 
+    transparent 60%
+  );
 }
 
 .stars-bg {
@@ -32,23 +40,91 @@
   width: 100%;
   height: 100%;
   background-image: 
-    radial-gradient(2px 2px at 20px 30px, #fff, transparent),
-    radial-gradient(2px 2px at 40px 70px, #fff, transparent),
-    radial-gradient(1px 1px at 90px 40px, #fff, transparent),
-    radial-gradient(1px 1px at 130px 80px, #fff, transparent),
-    radial-gradient(2px 2px at 160px 30px, #fff, transparent);
+    radial-gradient(1px 1px at 20px 30px, rgba(168, 85, 247, 0.3), transparent),
+    radial-gradient(1px 1px at 40px 70px, rgba(99, 102, 241, 0.2), transparent),
+    radial-gradient(1px 1px at 90px 40px, rgba(139, 92, 246, 0.3), transparent);
   background-repeat: repeat;
-  background-size: 200px 100px;
-  animation: twinkle 4s ease-in-out infinite alternate;
-  opacity: 0.6;
+  background-size: 150px 80px;
+  opacity: 0.4;
 }
 
-@keyframes twinkle {
-  0% { opacity: 0.3; }
-  100% { opacity: 0.8; }
+/* Ultra optimized raindrops container */
+.raindrops-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 10;
+  contain: layout style paint;
+  isolation: isolate;
 }
 
-/* Raindrops Container */
+/* Optimized raindrop class - minimal properties */
+.html-raindrop-optimized {
+  pointer-events: none;
+  object-fit: contain;
+  z-index: 5;
+  backface-visibility: hidden;
+  image-rendering: pixelated;
+  isolation: isolate;
+}
+
+/* Simplified rain animation - single transform only */
+@keyframes rainFallUltra {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  95% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(calc(100vh + 150px));
+    opacity: 0;
+  }
+}
+
+/* Performance optimizations for all raindrop elements */
+.raindrops-container * {
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  contain: layout style paint;
+}
+
+/* Responsive optimizations */
+@media (max-width: 768px) {
+  .html-raindrop-optimized {
+    max-width: 12px;
+    max-height: 12px;
+  }
+  
+  .stars-bg {
+    background-size: 100px 60px;
+    opacity: 0.3;
+  }
+}
+
+/* GPU acceleration hints */
+.purple-rain-canvas {
+  transform: translate3d(0, 0, 0);
+  will-change: auto;
+}
+
+/* Disable animations on low-end devices */
+@media (prefers-reduced-motion: reduce) {
+  .html-raindrop-optimized {
+    animation: none !important;
+    opacity: 0.3;
+  }
+}
+
+/* Ultra Performance Raindrops Container - 10k drops optimized */
 .raindrops-container {
   position: absolute;
   top: 0;
@@ -58,6 +134,13 @@
   overflow: hidden;
   pointer-events: none;
   z-index: 5;
+  /* 10k drops performance optimizations */
+  contain: layout style paint;
+  isolation: isolate;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  will-change: auto;
+  content-visibility: auto;
 }
 
 /* HTML Raindrop Styles - Optimized for performance */
@@ -72,7 +155,7 @@
   -webkit-transform: translateZ(0);
 }
 
-/* Optimized Image Raindrop Styles - Smooth and jitter-free */
+/* Ultra Performance Image Raindrop Styles - Optimized for 10,000+ drops */
 .html-raindrop-image-optimized {
   position: absolute;
   pointer-events: none;
@@ -82,10 +165,19 @@
   -webkit-backface-visibility: hidden;
   transform: translate3d(0, 0, 0);
   -webkit-transform: translate3d(0, 0, 0);
-  image-rendering: -webkit-optimize-contrast;
+  image-rendering: pixelated;
   image-rendering: crisp-edges;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Extreme optimizations for 10k raindrops */
+  contain: layout style paint;
+  isolation: isolate;
+  content-visibility: auto;
+  transform-style: flat;
+  /* GPU layer optimization */
+  -webkit-transform-style: flat;
+  perspective: 1000px;
+  -webkit-perspective: 1000px;
 }
 
 /* Legacy support for older raindrops */
@@ -227,7 +319,7 @@
   bottom: 80px;
   left: 20px;
   background: rgba(0, 0, 0, 0.9);
-  backdrop-filter: blur(10px);
+  /* Backdrop blur removed for pure performance */
   border: 1px solid rgba(139, 92, 246, 0.5);
   border-radius: 12px;
   padding: 12px 16px;
@@ -263,7 +355,7 @@
   bottom: 20px;
   right: 20px;
   background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(10px);
+  /* Backdrop blur removed for pure performance */
   border: 1px solid rgba(139, 92, 246, 0.4);
   border-radius: 15px;
   padding: 20px;
@@ -292,7 +384,7 @@
   height: 8px;
   border-radius: 50%;
   background: var(--accent-neon);
-  box-shadow: 0 0 10px var(--accent-neon);
+  /* Box shadow removed for pure performance */
 }
 
 /* Rain effects */
@@ -300,18 +392,10 @@
   position: absolute;
   pointer-events: none;
   border-radius: 50%;
-  filter: blur(0.5px);
+  /* Filter blur removed for pure performance */
 }
 
-/* Glow animations */
-@keyframes glow-pulse {
-  0%, 100% {
-    box-shadow: 0 0 5px var(--purple-primary);
-  }
-  50% {
-    box-shadow: 0 0 20px var(--purple-primary), 0 0 30px var(--purple-primary);
-  }
-}
+/* Glow animations removed to prevent astigmatism issues */
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
@@ -331,7 +415,7 @@
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(10px);
+  /* Backdrop blur removed for pure performance */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -348,7 +432,7 @@
   width: 90%;
   max-height: 80vh;
   overflow: hidden;
-  box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
+  /* Box shadow removed for pure performance */
   animation: slideIn 0.3s ease-out;
 }
 
@@ -446,7 +530,7 @@
   text-align: center;
   font-weight: 600;
   margin-top: 15px;
-  animation: glow-pulse 2s ease-in-out infinite;
+  /* Glow animation removed to prevent astigmatism issues */
 }
 
 @keyframes fadeIn {

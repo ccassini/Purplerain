@@ -5,7 +5,7 @@
   right: 0;
   z-index: 100;
   background: rgba(10, 10, 15, 0.9);
-  backdrop-filter: blur(10px);
+  /* Backdrop blur removed for pure performance */
   border-top: 1px solid rgba(139, 92, 246, 0.3);
   padding: 15px 30px;
 }
@@ -44,8 +44,9 @@
   width: 16px;
   height: 16px;
   object-fit: contain;
-  filter: drop-shadow(0 0 8px var(--purple-primary));
+  filter: drop-shadow(0 0 12px var(--purple-primary)) brightness(1.2) saturate(1.2);
   animation: heartbeat 2s ease-in-out infinite;
+  opacity: 1;
 }
 
 @keyframes heartbeat {
@@ -100,7 +101,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
+  /* Backdrop blur removed for pure performance */
   text-decoration: none;
   outline: none;
 }
@@ -190,5 +191,150 @@
   .cassini-button {
     font-size: 0.8rem;
     padding: 8px 15px;
+  }
+}
+
+/* Footer styles */
+.app-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.8);
+  /* Backdrop blur removed for pure performance */
+  border-top: 1px solid rgba(139, 92, 246, 0.3);
+  padding: 12px 24px;
+  z-index: 1000;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+  gap: 20px;
+}
+
+.footer-left, .footer-right {
+  flex: 1;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+}
+
+.footer-right {
+  text-align: right;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.footer-right:hover {
+  color: #8B5CF6;
+}
+
+/* Transaction Legend Styles */
+.transaction-legend {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 2;
+  justify-content: center;
+}
+
+.legend-title {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.legend-items {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.legend-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+  border-color: rgba(139, 92, 246, 0.3);
+}
+
+.legend-icon {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+}
+
+.legend-text {
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+  text-shadow: 0 0 4px currentColor;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .footer-content {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  
+  .transaction-legend {
+    order: -1;
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 8px;
+  }
+  
+  .legend-items {
+    gap: 8px;
+  }
+  
+  .legend-item {
+    padding: 3px 6px;
+  }
+  
+  .legend-text {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-footer {
+    padding: 8px 16px;
+  }
+  
+  .legend-items {
+    gap: 6px;
+  }
+  
+  .legend-item {
+    padding: 2px 4px;
+  }
+  
+  .legend-icon {
+    width: 12px;
+    height: 12px;
+  }
+  
+  .legend-text {
+    font-size: 9px;
+  }
+  
+  .legend-title {
+    font-size: 11px;
   }
 } 

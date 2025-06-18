@@ -5,20 +5,24 @@
 
 // Known contract signatures for different transaction types
 const CONTRACT_SIGNATURES = {
-  // DeFi Operations
+  // DeFi Operations - Swap, Stake, Liquidity
   DEFI: {
-    'swap': ['0xa9059cbb', '0x23b872dd', '0x095ea7b3', '0x7ff36ab5', '0x38ed1739'],
-    'stake': ['0xa694fc3a', '0x2e1a7d4d', '0x3ccfd60b', '0xb6b55f25'],
-    'liquidity': ['0xe8e33700', '0xbaa2abde', '0x4515cef3', '0x02751cec'],
-    'lending': ['0x1249c58b', '0xa415bcad', '0x69328dec', '0x573ade81']
+    'swap': ['0x7ff36ab5', '0x38ed1739', '0x8803dbee', '0x022c0d9f', '0x128acb08', '0x3593564c', '0x5c11d795'],
+    'stake': ['0xa694fc3a', '0x2e1a7d4d', '0x3ccfd60b', '0xb6b55f25', '0x2e17de78', '0x1249c58b'],
+    'liquidity': ['0xe8e33700', '0xbaa2abde', '0x4515cef3', '0x02751cec', '0x89afcb44', '0x0dcd7a6c']
   },
   
-  // NFT Operations
+  // NFT Operations - Mint, Transfer, Sale
   NFT: {
-    'mint': ['0x40c10f19', '0xa0712d68', '0x6a627842', '0x42842e0e'],
-    'transfer': ['0x23b872dd', '0x42842e0e', '0xb88d4fde', '0xa22cb465'],
-    'sell': ['0x96b5a755', '0xfb0f3ee1', '0x3593564c', '0xab834bab'],
-    'approve': ['0x095ea7b3', '0xa22cb465', '0x40c10f19']
+    'mint': ['0x40c10f19', '0xa0712d68', '0x6a627842', '0x1249c58b'],
+    'transfer': ['0x42842e0e', '0xb88d4fde', '0xf242432a', '0x2eb2c2d6'],
+    'sale': ['0x96b5a755', '0xfb0f3ee1', '0xab834bab', '0x3593564c', '0x5c11d795']
+  },
+  
+  // Transfer Operations - MON and ERC-20 transfers
+  TRANSFER: {
+    'erc20': ['0xa9059cbb', '0x23b872dd', '0x095ea7b3'], // transfer, transferFrom, approve
+    'native': [] // Native MON transfers (no method signature)
   },
   
   // Contract Operations
@@ -27,9 +31,6 @@ const CONTRACT_SIGNATURES = {
     'call': ['0x'] // Generic contract calls
   }
 }
-
-// Token transfer signatures
-const TRANSFER_SIGNATURES = ['0xa9059cbb', '0x23b872dd']
 
 export class TransactionAnalyzer {
   constructor() {
@@ -69,12 +70,17 @@ export class TransactionAnalyzer {
 
     const methodSignature = tx.input.substring(0, 10).toLowerCase()
 
-    // Check DeFi operations
+    // Check ERC-20 transfers first (MON + ERC-20 tokens)
+    if (this.isTransferTransaction(methodSignature, tx)) {
+      return 'transfer'
+    }
+
+    // Check DeFi operations (Swap, Stake, Liquidity)
     if (this.isDeFiTransaction(methodSignature, tx)) {
       return 'defi'
     }
 
-    // Check NFT operations
+    // Check NFT operations (Mint, Transfer, Sale)
     if (this.isNFTTransaction(methodSignature, tx)) {
       return 'nft'
     }
@@ -87,36 +93,80 @@ export class TransactionAnalyzer {
     return 'other'
   }
 
-  isDeFiTransaction(signature, tx) {
-    // Check against known DeFi signatures
-    for (const category of Object.values(CONTRACT_SIGNATURES.DEFI)) {
-      if (category.includes(signature)) {
-        return true
-      }
+  isTransferTransaction(signature, tx) {
+    // ERC-20 transfer signatures
+    const transferSignatures = CONTRACT_SIGNATURES.TRANSFER.erc20
+    
+    if (transferSignatures.includes(signature)) {
+      return true
     }
 
-    // Additional heuristics for DeFi
-    if (tx.value > 0.1 && signature !== '0x') {
-      // Large value transfers with contract interaction often DeFi
+    // Additional heuristics for ERC-20 transfers
+    if (signature === '0xa9059cbb' && tx.input && tx.input.length === 138) {
+      // transfer(address,uint256) has specific length
+      return true
+    }
+
+    if (signature === '0x23b872dd' && tx.input && tx.input.length === 202) {
+      // transferFrom(address,address,uint256) has specific length
       return true
     }
 
     return false
   }
 
+  isDeFiTransaction(signature, tx) {
+    // Check against known DeFi signatures (Swap, Stake, Liquidity)
+    for (const category of Object.values(CONTRACT_SIGNATURES.DEFI)) {
+      if (category.includes(signature)) {
+        return true
+      }
+    }
+
+    // Additional DeFi heuristics
+    if (tx.value > 0 && signature !== '0x') {
+      // Check for common DeFi patterns with value transfers
+      const commonDeFiSigs = ['0x7ff36ab5', '0x38ed1739', '0xa694fc3a', '0xe8e33700']
+      if (commonDeFiSigs.includes(signature)) {
+        return true
+      }
+    }
+
+    return false
+  }
+
   isNFTTransaction(signature, tx) {
-    // Check against known NFT signatures
+    // Check against known NFT signatures (Mint, Transfer, Sale)
     for (const category of Object.values(CONTRACT_SIGNATURES.NFT)) {
       if (category.includes(signature)) {
         return true
       }
     }
 
-    // NFT transactions often have specific patterns
-    if (signature === '0x42842e0e' || signature === '0x23b872dd') {
+    // ERC-721 specific signatures
+    const nftSpecificSigs = ['0x42842e0e', '0xb88d4fde', '0xf242432a']
+    if (nftSpecificSigs.includes(signature)) {
       return true
     }
 
+    // Check for NFT-like patterns (different from ERC-20 transfers)
+    if (signature === '0x23b872dd' && this.isLikelyNFT(tx)) {
+      return true
+    }
+
+    return false
+  }
+
+  isLikelyNFT(tx) {
+    // Heuristics to distinguish NFT from ERC-20 transfers
+    // NFTs often have 0 value and different gas patterns
+    if (tx.value === 0 || tx.value === '0x0') {
+      // Check input data length - NFT transfers often have different patterns
+      if (tx.input && tx.input.length > 200) {
+        return true
+      }
+    }
+    
     return false
   }
 

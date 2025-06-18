@@ -1,6 +1,6 @@
 /**
  * Enhanced RainDrop Class for Purple Rain
- * Redesigned for beautiful visual spectacle
+ * Redesigned for clean visual experience without astigmatism triggers
  */
 
 export class EnhancedRainDrop {
@@ -22,7 +22,7 @@ export class EnhancedRainDrop {
     
     // Clean visual properties
     this.size = this.calculateSize()
-    this.opacity = 1 // Start visible instead of invisible
+    this.opacity = 1 // Start visible
     this.rotation = 0 // No rotation for cleaner look
     this.rotationSpeed = 0 // Disabled rotation
     
@@ -39,23 +39,23 @@ export class EnhancedRainDrop {
     
     // Simplified trail system
     this.trail = []
-    this.maxTrailLength = 3 // Very short trail for clean look
+    this.maxTrailLength = 1 // Ultra minimal trail
     
-    // Minimal special effects - only for very special transactions
-    this.isSpecial = this.value > 1.0 // Only high-value transactions
-    this.sparkles = [] // Disabled sparkles for cleaner look
+    // No special effects to prevent astigmatism
+    this.isSpecial = false // Disabled special effects
+    this.sparkles = [] // No sparkles
     
     // Clean animation properties
     this.scale = 1 // Fixed scale
     this.targetScale = 1
     this.scaleSpeed = 0
     
-    // Clean color system - less intense
+    // Clean color system - very subtle
     this.tintColor = this.getCategoryTint()
-    this.tintIntensity = 0.3 // Much more subtle
-    this.glowColor = this.getGlowColor()
+    this.tintIntensity = 0.1 // Very subtle tinting
+    this.glowColor = [0, 0, 0] // No glow
     
-    // Minimal physics effects
+    // No physics effects
     this.windPhase = 0
     this.windStrength = 0 // No wind for clean vertical fall
   }
@@ -73,95 +73,68 @@ export class EnhancedRainDrop {
     
     let baseSize = baseSizes[this.category] || 22
     
-    // Minimal value-based scaling for very clean look
-    if (this.value > 5) baseSize *= 1.3
+    // Minimal value-based scaling for clean look
+    if (this.value > 5) baseSize *= 1.2
     else if (this.value > 1) baseSize *= 1.1
     
     return baseSize
   }
 
   calculateFallSpeed() {
-    // More natural and varied speeds for individual drop behavior
+    // Natural and varied speeds for individual drop behavior
     const categorySpeeds = {
-      defi: 0.8 + Math.random() * 0.4,      // Slower, more deliberate
-      nft: 0.6 + Math.random() * 0.3,       // Gentle floating
-      transfer: 1.0 + Math.random() * 0.5,  // Moderate speed
-      contractCall: 0.7 + Math.random() * 0.4, // Steady pace
-      contractDeploy: 0.5 + Math.random() * 0.3, // Very gentle
-      other: 0.8 + Math.random() * 0.4      // Balanced
+      defi: 0.8 + Math.random() * 0.3,      // Slower, more deliberate
+      nft: 0.6 + Math.random() * 0.2,       // Gentle floating
+      transfer: 1.0 + Math.random() * 0.4,  // Moderate speed
+      contractCall: 0.7 + Math.random() * 0.3, // Steady pace
+      contractDeploy: 0.5 + Math.random() * 0.2, // Very gentle
+      other: 0.8 + Math.random() * 0.3      // Balanced
     }
     
     return categorySpeeds[this.category] || 0.8
   }
 
   calculateGlow() {
-    // Enhanced glow for visual beauty
-    const categoryGlow = {
-      defi: 15 + Math.random() * 10,
-      nft: 20 + Math.random() * 15,
-      contractCall: 12 + Math.random() * 8,
-      contractDeploy: 25 + Math.random() * 15,
-      transfer: 10 + Math.random() * 5,
-      other: 8 + Math.random() * 7
-    }
-    
-    return categoryGlow[this.category] || 10
+    // No glow to prevent astigmatism
+    return 0
   }
 
   getCategoryTint() {
+    // Subtle colors to prevent visual strain
     const tints = {
-      defi: [0, 255, 200],      // Bright cyan
-      nft: [255, 100, 150],     // Hot pink
-      transfer: [100, 200, 255], // Sky blue
-      contractCall: [150, 100, 255], // Purple
-      contractDeploy: [100, 255, 150], // Bright green
-      other: [255, 200, 100]     // Golden
+      defi: [0, 200, 180],      // Soft cyan
+      nft: [200, 100, 150],     // Soft pink
+      transfer: [100, 180, 200], // Soft blue
+      contractCall: [150, 100, 200], // Soft purple
+      contractDeploy: [100, 200, 150], // Soft green
+      other: [200, 180, 100]     // Soft gold
     }
-    return tints[this.category] || [200, 150, 255]
+    return tints[this.category] || [180, 150, 200]
   }
 
   getGlowColor() {
-    // Slightly different glow color for depth
-    const [r, g, b] = this.tintColor
-    return [
-      Math.min(255, r + 30),
-      Math.min(255, g + 30),
-      Math.min(255, b + 30)
-    ]
+    // No glow color
+    return [0, 0, 0]
   }
 
   generateSparkles() {
-    const sparkleCount = Math.floor(Math.random() * 4) + 2
-    const sparkles = []
-    
-    for (let i = 0; i < sparkleCount; i++) {
-      sparkles.push({
-        x: (Math.random() - 0.5) * this.size,
-        y: (Math.random() - 0.5) * this.size,
-        size: Math.random() * 3 + 1,
-        phase: Math.random() * Math.PI * 2,
-        speed: Math.random() * 0.1 + 0.05,
-        opacity: 0,
-        color: [255, 255, 255]
-      })
-    }
-    
-    return sparkles
+    // No sparkles to prevent astigmatism
+    return []
   }
 
   update(p5, deltaTime = 1) {
     // Update life
     this.life = (Date.now() - this.birth) / 1000
     
-    // Keep opacity at 1 for now to ensure visibility
-    this.opacity = 1
+    // Maintain opacity for visibility
+    this.opacity = Math.max(0, 1 - this.life / this.maxLife)
     
     // Clean vertical movement only
     const timeMultiplier = Math.min(deltaTime, 1.5)
     this.y += this.velocity.y * timeMultiplier
     
-    // Update trail less frequently for clean look
-    if (Math.random() < 0.5) { // 50% chance to add trail point
+    // Update trail very rarely for pure performance
+    if (Math.random() < 0.05) { // Ultra rare trail updates
       this.updateTrail()
     }
     
@@ -173,9 +146,9 @@ export class EnhancedRainDrop {
   }
 
   updateTrail() {
-    // Clean trail with better spacing
+    // Minimal trail with better spacing
     const lastTrail = this.trail[this.trail.length - 1]
-    const minDistance = 25 // Larger distance for cleaner trail
+    const minDistance = 40 // Larger distance for cleaner trail
     
     if (!lastTrail || 
         Math.abs(this.y - lastTrail.y) > minDistance) {
@@ -184,7 +157,7 @@ export class EnhancedRainDrop {
         x: this.x,
         y: this.y,
         opacity: this.opacity,
-        size: this.size * 0.4, // Smaller trail for minimal look
+        size: this.size * 0.3, // Smaller trail for minimal look
         time: Date.now(),
         color: [...this.tintColor]
       })
@@ -197,115 +170,109 @@ export class EnhancedRainDrop {
     
     // Remove old trail points quickly
     const now = Date.now()
-    this.trail = this.trail.filter(point => now - point.time < 800) // 0.8 second max trail life
+    this.trail = this.trail.filter(point => now - point.time < 600) // 0.6 second max trail life
   }
 
   updateSparkles(deltaTime) {
-    this.sparkles.forEach(sparkle => {
-      sparkle.phase += sparkle.speed * deltaTime
-      sparkle.opacity = (Math.sin(sparkle.phase) + 1) * 0.4 * this.opacity
-      
-      // Sparkle movement
-      sparkle.x += (Math.random() - 0.5) * 0.1 * deltaTime
-      sparkle.y += (Math.random() - 0.5) * 0.1 * deltaTime
-    })
+    // No sparkles
   }
 
   draw(p5) {
     if (this.opacity <= 0.01) return
 
-    // Debug logging
-    if (Math.random() < 0.01) { // Log occasionally to avoid spam
-              // Debug drawing (removed for production)
-    }
-
-    // Draw minimal trail first
-    this.drawCleanTrail(p5)
-    
-    // Draw main raindrop - clean and simple
     p5.push()
     p5.translate(this.x, this.y)
-    // No rotation, no scaling
     
-    // Draw the main drop - simplified
+    // Draw minimal trail
+    this.drawCleanTrail(p5)
+    
+    // Draw clean drop
     this.drawCleanDrop(p5)
     
     p5.pop()
   }
 
   drawCleanTrail(p5) {
-    if (this.trail.length < 2) return
+    // Minimal trail without effects
+    if (this.trail.length === 0) return
     
     p5.push()
-    p5.noFill()
+    p5.noStroke()
     
-    // Very simple, clean trail
-    for (let i = 1; i < this.trail.length; i++) {
-      const current = this.trail[i]
-      const previous = this.trail[i - 1]
+    this.trail.forEach((point, index) => {
+      const age = (Date.now() - point.time) / 600 // 0.6 second max
+      const trailOpacity = (1 - age) * this.opacity * 0.1 // Very subtle
       
-      const trailOpacity = (i / this.trail.length) * current.opacity * 0.3
-      if (trailOpacity > 0.05) {
-        const [r, g, b] = current.color
+      if (trailOpacity > 0.01) {
+        const [r, g, b] = point.color
+        const trailColor = p5.color(r, g, b)
+        trailColor.setAlpha(trailOpacity * 255)
+        p5.fill(trailColor)
         
-        // Single, clean trail line
-        p5.stroke(r, g, b, trailOpacity * 255)
-        p5.strokeWeight(current.size * 0.2) // Very thin trail
+        const relativeX = point.x - this.x
+        const relativeY = point.y - this.y
+        const trailSize = point.size * (1 - age) * 0.5
         
-        p5.line(
-          previous.x, previous.y,
-          current.x, current.y
-        )
+        p5.push()
+        p5.translate(relativeX, relativeY)
+        p5.circle(0, 0, trailSize)
+        p5.pop()
       }
-    }
+    })
     
     p5.pop()
   }
 
   drawCleanDrop(p5) {
-    // Always render something visible
-    const [r, g, b] = this.tintColor
-    
-    // Simple filled circle - always visible
-    p5.fill(r, g, b, this.opacity * 200)
-    p5.noStroke()
-    p5.circle(0, 0, this.size)
-    
-    // Subtle inner highlight
-    p5.fill(255, 255, 255, this.opacity * 80)
-    p5.circle(-this.size * 0.15, -this.size * 0.15, this.size * 0.3)
-    
-    // Try to use image if available (overlay on top)
-    if (this.image && this.image.width > 0) {
-      p5.tint(255, this.opacity * 150) // Semi-transparent overlay
-      p5.imageMode(p5.CENTER)
-      p5.image(this.image, 0, 0, this.size * 0.8, this.size * 0.8)
-      p5.noTint()
+    // Clean drop rendering without effects
+    if (!this.image) {
+      // Simple colored circle
+      p5.push()
+      p5.noStroke()
+      
+      const [r, g, b] = this.tintColor
+      const dropColor = p5.color(r, g, b)
+      dropColor.setAlpha(this.opacity * 180)
+      p5.fill(dropColor)
+      
+      p5.circle(0, 0, this.size)
+      p5.pop()
+      return
     }
+    
+    // Image-based drop with minimal effects
+    p5.push()
+    
+    // Very subtle tinting
+    const [r, g, b] = this.tintColor
+    const tintColor = p5.color(r, g, b)
+    tintColor.setAlpha(this.opacity * 60) // Very subtle
+    p5.tint(tintColor)
+    
+    // Draw image
+    p5.image(this.image, -this.size/2, -this.size/2, this.size, this.size)
+    
+    p5.pop()
   }
 
   isOffScreen(height, width) {
-    return this.y > height + 200 || 
-           this.x < -200 || 
-           this.x > width + 200 || 
+    return this.y > height + 50 || 
+           this.x < -50 || 
+           this.x > width + 50 ||
            this.opacity <= 0.01
   }
 
   isClicked(mouseX, mouseY) {
     const distance = Math.sqrt((mouseX - this.x) ** 2 + (mouseY - this.y) ** 2)
-    return distance < this.size / 2
+    return distance < this.size
   }
 
   getTransactionInfo() {
     return {
-      hash: this.tx.hash || 'N/A',
+      hash: this.tx.hash,
+      value: this.tx.value,
       category: this.category,
-      categoryDisplay: this.category.toUpperCase().replace(/([A-Z])/g, ' $1').trim(),
-      value: this.value.toFixed(6),
-      token: 'MON',
-      blockNumber: this.tx.blockNumber || 'Pending',
-      gasPrice: this.tx.gasPrice || 'N/A',
-      isSpecial: this.isSpecial
+      categoryDisplay: this.tx.categoryDisplay || this.category
     }
   }
 }

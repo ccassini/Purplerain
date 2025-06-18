@@ -3,7 +3,14 @@
   height: 100vh;
   position: relative;
   overflow: hidden;
-  background: radial-gradient(ellipse at center, #1a0b2e 0%, #0a0a0f 100%);
+  /* Background image with overlay */
+  background: 
+    linear-gradient(rgba(26, 11, 46, 0.3), rgba(10, 10, 15, 0.4)),
+    url('/backgroud.png');
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
 }
 
 .loading-screen {
@@ -57,7 +64,7 @@
   height: 4px;
   background: linear-gradient(90deg, var(--purple-primary), var(--purple-secondary));
   border-radius: 2px;
-  box-shadow: 0 0 20px var(--purple-primary);
+  /* Box shadow removed for pure performance */
 }
 
 .main-content {

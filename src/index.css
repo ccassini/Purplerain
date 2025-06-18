@@ -30,11 +30,11 @@ body {
 }
 
 .glow {
-  filter: drop-shadow(0 0 10px var(--purple-primary));
+  /* All glow effects removed for pure performance */
 }
 
 .neon-glow {
-  text-shadow: 0 0 10px var(--accent-neon);
+  /* All neon glow effects removed for pure performance */
 }
 
 .purple-gradient {

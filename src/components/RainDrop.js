@@ -12,26 +12,25 @@ export class RainDrop {
     this.size = this.calculateSize(transaction)
     this.opacity = 1
     this.trail = []
-    this.maxTrailLength = 15
+    this.maxTrailLength = 3 // Ultra minimal trail
     this.color = transaction.color || '#8B5CF6'
     this.birth = Date.now()
     this.life = 0
-    this.glowIntensity = this.calculateGlow(transaction)
+    this.glowIntensity = 0 // Disabled glow to prevent astigmatism issues
     this.imageManager = imageManager
     this.rotation = 0
-    this.rotationSpeed = (Math.random() - 0.5) * 0.02
-    this.pulsePhase = Math.random() * Math.PI * 2
-    this.isSpecial = this.checkIfSpecial(transaction)
+    this.rotationSpeed = 0 // Disabled rotation for cleaner look
+    this.pulsePhase = 0 // Disabled pulsing
+    this.isSpecial = false // Disabled special effects
     this.category = transaction.category || 'other'
     
     // Physics properties
     this.velocity = { x: 0, y: this.speed }
     this.acceleration = { x: 0, y: 0.01 }
-    this.wind = (Math.random() - 0.5) * 0.3
+    this.wind = 0 // Disabled wind for cleaner vertical movement
     
-    // Visual effects
-    this.sparkles = []
-    this.generateSparkles()
+    // Visual effects - disabled to prevent astigmatism
+    this.sparkles = [] // No sparkles
   }
 
   calculateSpeed(transaction) {
@@ -51,38 +50,22 @@ export class RainDrop {
   }
 
   calculateGlow(transaction) {
-    // Glow intensity based on transaction importance
-    const baseGlow = 10
-    const valueGlow = transaction.value * 5
-    const gasGlow = transaction.gasPrice * 2
-    return Math.min(baseGlow + valueGlow + gasGlow, 50)
+    // Glow disabled to prevent astigmatism issues
+    return 0
   }
 
   checkIfSpecial(transaction) {
-    // Special transactions (high value, contract creation, etc.)
-    return transaction.value > 1 || 
-           transaction.gasPrice > 100 || 
-           (transaction.input && transaction.input !== '0x')
+    // Special effects disabled to prevent astigmatism
+    return false
   }
 
   generateSparkles() {
-    if (this.isSpecial) {
-      const sparkleCount = Math.floor(Math.random() * 3) + 2
-      for (let i = 0; i < sparkleCount; i++) {
-        this.sparkles.push({
-          x: (Math.random() - 0.5) * this.size * 2,
-          y: (Math.random() - 0.5) * this.size * 2,
-          size: Math.random() * 2 + 1,
-          opacity: Math.random() * 0.8 + 0.2,
-          phase: Math.random() * Math.PI * 2
-        })
-      }
-    }
+    // Sparkles disabled to prevent astigmatism issues
+    this.sparkles = []
   }
 
   update(p5, deltaTime = 1) {
-    // Update physics
-    this.velocity.x += this.acceleration.x + this.wind * 0.1
+    // Update physics - clean vertical movement only
     this.velocity.y += this.acceleration.y
     
     this.x += this.velocity.x * deltaTime
@@ -92,27 +75,23 @@ export class RainDrop {
     this.life = (Date.now() - this.birth) / 1000
     this.opacity = Math.max(0, 1 - this.life / 12) // Fade over 12 seconds
     
-    // Update rotation
-    this.rotation += this.rotationSpeed * deltaTime
+    // No rotation updates for cleaner look
     
-    // Update trail
-    this.trail.push({ x: this.x, y: this.y, opacity: this.opacity })
-    if (this.trail.length > this.maxTrailLength) {
-      this.trail.shift()
+    // Update trail with minimal frequency
+    if (Math.random() < 0.1) { // Ultra minimal trail updates
+      this.trail.push({ x: this.x, y: this.y, opacity: this.opacity })
+      if (this.trail.length > this.maxTrailLength) {
+        this.trail.shift()
+      }
     }
     
-    // Update sparkles
-    this.updateSparkles(deltaTime)
+    // No sparkle updates
     
-    // Add slight horizontal drift for organic movement
-    this.x += Math.sin(this.y * 0.01 + this.pulsePhase) * 0.3 * deltaTime
+    // Clean vertical movement - no horizontal drift
   }
 
   updateSparkles(deltaTime) {
-    this.sparkles.forEach(sparkle => {
-      sparkle.phase += 0.1 * deltaTime
-      sparkle.opacity = (Math.sin(sparkle.phase) + 1) * 0.4 * this.opacity
-    })
+    // Sparkles disabled
   }
 
   draw(p5) {
@@ -120,9 +99,9 @@ export class RainDrop {
 
     p5.push()
     p5.translate(this.x, this.y)
-    p5.rotate(this.rotation)
+    // No rotation
 
-    // Draw trail
+    // Draw minimal trail
     this.drawTrail(p5)
     
     // Draw main drop using image manager
@@ -132,28 +111,25 @@ export class RainDrop {
       this.drawDefaultDrop(p5)
     }
     
-    // Draw sparkles for special transactions
-    this.drawSparkles(p5)
-    
-    // Draw glow effect
-    this.drawGlow(p5)
+    // No sparkles or glow effects
     
     p5.pop()
   }
 
   drawTrail(p5) {
+    // Simplified trail without excessive effects
     for (let i = 0; i < this.trail.length; i++) {
       const trailPoint = this.trail[i]
-      const trailOpacity = (i / this.trail.length) * trailPoint.opacity * 0.4
+      const trailOpacity = (i / this.trail.length) * trailPoint.opacity * 0.2 // Reduced opacity
       
-      if (trailOpacity > 0.01) {
+      if (trailOpacity > 0.02) {
         p5.push()
         const trailColor = p5.color(this.color)
         trailColor.setAlpha(trailOpacity * 255)
         p5.fill(trailColor)
         p5.noStroke()
         
-        const trailSize = this.size * (i / this.trail.length) * 0.7
+        const trailSize = this.size * (i / this.trail.length) * 0.5 // Smaller trail
         p5.translate(trailPoint.x - this.x, trailPoint.y - this.y)
         p5.circle(0, 0, trailSize)
         p5.pop()
@@ -171,117 +147,64 @@ export class RainDrop {
       return
     }
     
-    // Draw category-specific image with optimized rendering
+    // Draw category-specific image with clean rendering
     p5.push()
     
-    // Apply opacity
+    // Apply opacity without excessive effects
     p5.tint(255, this.opacity * 255)
     
-    // Apply category color tinting
+    // Subtle category color tinting
     const tintColor = p5.color(this.color)
-    tintColor.setAlpha(this.opacity * 180)
+    tintColor.setAlpha(this.opacity * 120) // Reduced tinting
     p5.tint(tintColor)
     
-    // Calculate size with performance optimization
+    // Calculate size
     const imageSize = this.size * 2.2
     
-    // Draw with optimized parameters
+    // Draw with clean parameters
     p5.image(imageToUse, -imageSize/2, -imageSize/2, imageSize, imageSize)
     
     p5.pop()
   }
 
   drawDefaultDrop(p5) {
-    // Enhanced default raindrop with gradient effect
+    // Simple default raindrop without gradient effects
     p5.push()
     
-    // Main drop with gradient
-    for (let r = this.size * 2; r > 0; r -= 0.5) {
-      const alpha = (1 - r / (this.size * 2)) * this.opacity * 0.8
-      const dropColor = p5.color(this.color)
-      dropColor.setAlpha(alpha * 255)
-      p5.fill(dropColor)
-      p5.noStroke()
-      p5.circle(0, 0, r)
-    }
+    // Simple solid drop
+    const dropColor = p5.color(this.color)
+    dropColor.setAlpha(this.opacity * 200)
+    p5.fill(dropColor)
+    p5.noStroke()
     
-    // Inner shine effect
-    const shineColor = p5.color('#FFFFFF')
-    shineColor.setAlpha(this.opacity * 120)
-    p5.fill(shineColor)
-    p5.circle(-this.size * 0.3, -this.size * 0.3, this.size * 0.6)
-    
-    // Pulse effect for special transactions
-    if (this.isSpecial) {
-      const pulseSize = this.size * (1 + Math.sin(this.life * 8) * 0.2)
-      const pulseColor = p5.color(this.color)
-      pulseColor.setAlpha(this.opacity * 50)
-      p5.fill(pulseColor)
-      p5.circle(0, 0, pulseSize * 2.5)
-    }
+    // Simple circle instead of complex gradient
+    p5.circle(0, 0, this.size * 2)
     
     p5.pop()
   }
 
   drawSparkles(p5) {
-    if (!this.isSpecial || this.sparkles.length === 0) return
-    
-    p5.push()
-    this.sparkles.forEach(sparkle => {
-      if (sparkle.opacity > 0.01) {
-        p5.push()
-        p5.translate(sparkle.x, sparkle.y)
-        
-        const sparkleColor = p5.color('#FFFFFF')
-        sparkleColor.setAlpha(sparkle.opacity * 255)
-        p5.fill(sparkleColor)
-        p5.noStroke()
-        
-        // Draw star-like sparkle
-        p5.rotate(sparkle.phase)
-        for (let i = 0; i < 4; i++) {
-          p5.rotate(p5.PI / 2)
-          p5.ellipse(0, 0, sparkle.size, sparkle.size * 0.3)
-        }
-        
-        p5.pop()
-      }
-    })
-    p5.pop()
+    // Sparkles disabled to prevent astigmatism issues
   }
 
   drawGlow(p5) {
-    // Outer glow effect
-    p5.push()
-    p5.drawingContext.shadowColor = this.color
-    p5.drawingContext.shadowBlur = this.glowIntensity * this.opacity
-    
-    const glowColor = p5.color(this.color)
-    glowColor.setAlpha(this.opacity * 30)
-    p5.fill(glowColor)
-    p5.noStroke()
-    p5.circle(0, 0, this.size * 3)
-    
-    p5.pop()
+    // Glow disabled to prevent astigmatism issues
   }
 
   isOffScreen(height, width) {
-    return this.y > height + 100 || 
-           this.x < -100 || 
-           this.x > width + 100 || 
-           this.opacity <= 0.01
+    return this.y > height + 50 || 
+           this.x < -50 || 
+           this.x > width + 50 ||
+           this.opacity <= 0
   }
 
-  // Get transaction info for display
   getTransactionInfo() {
     return {
       hash: this.tx.hash,
       value: this.tx.value,
-      token: this.tx.token || 'MON',
       gasPrice: this.tx.gasPrice,
-      from: this.tx.from,
-      to: this.tx.to,
-      isSpecial: this.isSpecial
+      category: this.category,
+      categoryDisplay: this.tx.categoryDisplay
     }
   }
 } 
